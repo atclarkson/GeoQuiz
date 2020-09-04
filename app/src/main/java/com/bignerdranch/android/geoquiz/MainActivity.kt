@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
     private lateinit var falseButton: Button
     private lateinit var nextButton: Button
+    private lateinit var prevButton: Button
     private lateinit var questionTextView: TextView
 
     private val questionBank = listOf(
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true))
 
-    private var currentIndex = 0
+    private var currentIndex = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +32,11 @@ class MainActivity : AppCompatActivity() {
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
         nextButton = findViewById(R.id.next_button)
+        prevButton = findViewById(R.id.prev_button)
         questionTextView = findViewById(R.id.question_text_view)
 
         trueButton.setOnClickListener { _: View ->
             checkAnswer(true)
-
         }
 
         falseButton.setOnClickListener { _: View ->
@@ -43,11 +44,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
-            updateQuestion()
+            nextQuestion()
+        }
+        prevButton.setOnClickListener {
+            prevQuestion()
         }
 
-
+        questionTextView.setOnClickListener {
+            nextQuestion()
+        }
 
         updateQuestion()
     }
@@ -66,5 +71,15 @@ class MainActivity : AppCompatActivity() {
         }
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
             .show()
+    }
+
+    private fun nextQuestion() {
+        currentIndex = (currentIndex + 1) % questionBank.size
+        updateQuestion()
+    }
+    private fun prevQuestion() {
+        if (currentIndex == 1) currentIndex = questionBank.size    // Check if number is going to go to negative, if it will just put it one above the last element.
+        currentIndex = (currentIndex - 1) % questionBank.size
+        updateQuestion()
     }
 }
