@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true))
 
-    private var currentIndex = 1
+    private var currentIndex = 1u
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +57,12 @@ class MainActivity : AppCompatActivity() {
         updateQuestion()
     }
     private fun updateQuestion() {
-        val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = questionBank[currentIndex.toInt()].textResId
         questionTextView.setText(questionTextResId)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
-        val correctAnswer = questionBank[currentIndex].answer
+        val correctAnswer = questionBank[currentIndex.toInt()].answer
 
         val messageResId = if (userAnswer == correctAnswer) {
             R.string.correct_toast
@@ -74,12 +74,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun nextQuestion() {
-        currentIndex = (currentIndex + 1) % questionBank.size
+        currentIndex = (currentIndex + 1u) % questionBank.size.toUInt()
         updateQuestion()
     }
     private fun prevQuestion() {
-        if (currentIndex == 1) currentIndex = questionBank.size    // Check if number is going to go to negative, if it will just put it one above the last element.
-        currentIndex = (currentIndex - 1) % questionBank.size
+        if (currentIndex == 1u) currentIndex = questionBank.size.toUInt()    // Check if number is going to go to negative, if it will just put it one above the last element.
+        currentIndex = (currentIndex - 1u) % questionBank.size.toUInt()
         updateQuestion()
     }
 }
